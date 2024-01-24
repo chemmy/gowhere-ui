@@ -11,16 +11,9 @@ const ErrorMessage = ({ error }: ErrorMessageType) => {
     (error as unknown as ApiErrorResponseType)?.response?.data || {};
 
   const alertTitle = errorTitle || "Unknown Error";
-  const alertDescription =
-    message || "Something went wrong. Please contact support.";
 
   return (
-    <Alert
-      message={alertTitle}
-      description={alertDescription}
-      type="error"
-      showIcon
-    />
+    <Alert message={alertTitle} description={message} type="error" showIcon />
   );
 };
 

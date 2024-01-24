@@ -8,13 +8,14 @@
     grid-template-columns: repeat(2, 180px);
 
     > div:last-child {
-      grid-column: span 2; /* Make the third item span two columns */
+      grid-column: span 2;
     }
   }
 }
 
 .ant-form {
   .rowGrid();
+  margin-bottom: 0;
 
   .ant-row {
     width: 100%;
@@ -40,6 +41,21 @@
     button {
       float: right;
       margin-top: 12px;
+    }
+  }
+}
+
+.recent-record {
+  .rowGrid();
+  margin-bottom: 0;
+
+  @media only screen and (max-width: 640px) {
+    grid-template-columns: repeat(2, 180px);
+
+    > div,
+    > div:last-child {
+      grid-column: span 1;
+      margin-top: 20px;
     }
   }
 }

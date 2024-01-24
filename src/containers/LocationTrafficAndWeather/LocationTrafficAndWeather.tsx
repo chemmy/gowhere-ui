@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { Form, DatePicker, TimePicker, Button } from "antd";
+import { Form, DatePicker, TimePicker, Button, message } from "antd";
 import { useQuery } from "@tanstack/react-query";
 
 import type { Dayjs } from "dayjs";
@@ -11,6 +11,11 @@ import LocationsList from "../../components/LocationsList/LocationsList";
 import { validation } from "../../common/constants/forms";
 
 import "./style.less";
+import {
+  LOCAL_STORAGE_KEYS,
+  localStorageHelper,
+} from "../../common/helpers/localStorage";
+import RecentSearches from "../../components/RecentSearches/RecentSearches";
 
 type LocationFormType = {
   date: Dayjs;
@@ -19,10 +24,15 @@ type LocationFormType = {
 
 const LocationTrafficAndWeather = (): ReactElement => {
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const [date, setDate] = useState<string>("");
   const [location, setLocation] = useState<TrafficImage | null>(null);
   const [locationId, setLocationId] = useState<string | null>(null);
+
+  const { RECENT_SEARCHES } = LOCAL_STORAGE_KEYS;
+  const recentSearches =
+    localStorageHelper.getItem<TrafficImage[]>(RECENT_SEARCHES) || [];
 
   const {
     data: trafficData,
@@ -58,21 +68,38 @@ const LocationTrafficAndWeather = (): ReactElement => {
     setDate(combinedDateTime.toISOString());
   };
 
+  const updateSearchHistory = (location: TrafficImage) => {
+    const LIST_MAX = 5;
+    const searches = recentSearches.filter((item) => item.id != location.id);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { image, ...rest } = location;
+    const updatedHistory = [rest, ...searches].slice(0, LIST_MAX);
+
+    localStorageHelper.setItem(RECENT_SEARCHES, updatedHistory);
+  };
+
   useEffect(() => {
-    if (!trafficData) return;
+    if (!trafficData || !locationId) return;
 
-    const record = trafficData.find((traffic) => traffic.id === locationId);
+    const selectedLocation = trafficData.find(
+      (traffic) => traffic.id === locationId
+    );
 
-    if (!record) {
+    if (!selectedLocation) {
+      messageApi.open({ type: "warning", content: "Location not found" });
       setLocation(null);
       return;
     }
 
-    setLocation(record);
+    setLocation(selectedLocation);
+    updateSearchHistory(selectedLocation);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trafficData, locationId]);
 
-  const onLocationChange = (value: string) => {
-    setLocationId(value);
+  const onRecentSearchClick = (item: TrafficImage) => {
+    setLocationId(item.id);
   };
 
   return (
@@ -86,6 +113,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
         </Form.Item>
 
         <Form.Item>
+          {contextHolder}
           <Button
             type="primary"
             htmlType="submit"
@@ -96,11 +124,26 @@ const LocationTrafficAndWeather = (): ReactElement => {
         </Form.Item>
       </Form>
 
+      {date ? (
+        <div className="recent-record">
+          <RecentSearches
+            title="My Recent Searches"
+            list={recentSearches}
+            onItemClick={onRecentSearchClick}
+          />
+          <RecentSearches
+            title="Recent Searches by Others"
+            list={recentSearches}
+            onItemClick={onRecentSearchClick}
+          />
+        </div>
+      ) : null}
+
       <div className="locations-info">
         <div className="location-main">
           <LocationsList
             locationId={locationId}
-            onLocationChange={onLocationChange}
+            onLocationChange={setLocationId}
             trafficData={trafficData}
             error={trafficError}
           />
