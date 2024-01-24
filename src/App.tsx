@@ -1,8 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import "./App.css";
-import LocationTrafficAndWeather from "./containers/LocationTrafficAndWeather";
+import LocationTrafficAndWeather from "./containers/LocationTrafficAndWeather/LocationTrafficAndWeather";
 
 const queryClient = new QueryClient();
 

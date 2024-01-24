@@ -1,0 +1,58 @@
+.rowGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 180px);
+  grid-column-gap: 20px;
+  margin-bottom: 24px;
+
+  @media only screen and (max-width: 640px) {
+    grid-template-columns: repeat(2, 180px);
+
+    > div:last-child {
+      grid-column: span 2; /* Make the third item span two columns */
+    }
+  }
+}
+
+.ant-form {
+  .rowGrid();
+
+  .ant-row {
+    width: 100%;
+  }
+
+  .ant-form-item {
+    display: flex;
+    align-items: end;
+    margin-bottom: 8px;
+  }
+
+  button {
+    display: flex;
+
+    @media only screen and (max-width: 640px) {
+      float: right;
+    }
+  }
+}
+
+.location-main {
+  .rowGrid();
+
+  .location-select {
+    grid-column: span 2;
+  }
+
+  .weatherforecast {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+.traffic-camera {
+  .rowGrid();
+
+  > div {
+    grid-column: span 2;
+  }
+}

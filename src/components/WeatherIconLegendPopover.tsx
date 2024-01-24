@@ -5,7 +5,7 @@ import { QuestionCircleFilled } from "@ant-design/icons";
 
 const { Text } = Typography;
 
-export const WeatherIconLegendPopover = () => {
+const WeatherIconLegendPopover = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpenChange = (newOpen: boolean) => {
@@ -45,3 +45,5 @@ export const WeatherIconLegendPopover = () => {
     </Popover>
   );
 };
+
+export default WeatherIconLegendPopover;

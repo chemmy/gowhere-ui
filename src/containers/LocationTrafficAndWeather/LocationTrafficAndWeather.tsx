@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { Dayjs } from "dayjs";
 
-import { gowhereApi } from "../services/gowhere/api";
-import TrafficCamera from "../components/TrafficCamera";
-import { WeatherForecastCard } from "../components/WeatherForecastCard";
+import { gowhereApi } from "../../services/gowhere/api";
+import TrafficCamera from "../../components/TrafficCamera";
+import WeatherForecast from "../../components/WeatherForecast/WeatherForecast";
+import "./style.less";
 
 const LocationTrafficAndWeather = (): ReactElement => {
   const [form] = Form.useForm();
@@ -53,6 +54,8 @@ const LocationTrafficAndWeather = (): ReactElement => {
 
     setLocationId(null);
     setDate(combinedDateTime.toISOString());
+
+    // TODO: clear weather and location on search
   };
 
   useEffect(() => {
@@ -92,6 +95,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
         </Form.Item>
 
         <Form.Item>
+          {/* Add disabled and loading */}
           <Button type="primary" htmlType="submit">
             Search
           </Button>
@@ -101,19 +105,20 @@ const LocationTrafficAndWeather = (): ReactElement => {
       <div className="locations-info">
         <div className="location-main">
           {trafficImagesQuery.data ? (
-            <Select
-              value={locationId}
-              options={getLocationOptions()}
-              onChange={setLocationId}
-              style={{ width: 200 }}
-            />
+            <>
+              <Select
+                value={locationId}
+                options={getLocationOptions()}
+                onChange={setLocationId} // TODO clear weather
+                placeholder="Please select location"
+                className="location-select"
+              />
+            </>
           ) : null}
 
-          <div className="weather-forecast">
+          <div className="forecast">
             {/* Add loading here */}
-            <WeatherForecastCard
-              locationForecast={weatherForecastQuery?.data}
-            />
+            <WeatherForecast locationForecast={weatherForecastQuery?.data} />
           </div>
         </div>
         <div className="traffic-camera">
