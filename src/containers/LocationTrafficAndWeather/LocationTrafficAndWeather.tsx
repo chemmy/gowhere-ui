@@ -1,13 +1,21 @@
 import { ReactElement, useEffect, useState } from "react";
-import { Form, DatePicker, TimePicker, Button, Select } from "antd";
+import { Form, DatePicker, TimePicker, Button } from "antd";
 import { useQuery } from "@tanstack/react-query";
 
 import type { Dayjs } from "dayjs";
 
 import { gowhereApi } from "../../services/gowhere/api";
-import TrafficCamera from "../../components/TrafficCamera";
+import TrafficCamera from "../../components/TrafficCamera/TrafficCamera";
 import WeatherForecast from "../../components/WeatherForecast/WeatherForecast";
+import LocationsList from "../../components/LocationsList/LocationsList";
+import { validation } from "../../common/constants/forms";
+
 import "./style.less";
+
+type LocationFormType = {
+  date: Dayjs;
+  time: Dayjs;
+};
 
 const LocationTrafficAndWeather = (): ReactElement => {
   const [form] = Form.useForm();
@@ -16,87 +24,73 @@ const LocationTrafficAndWeather = (): ReactElement => {
   const [location, setLocation] = useState<TrafficImage | null>(null);
   const [locationId, setLocationId] = useState<string | null>(null);
 
-  // TODO: Stop rerender on locationId change?
-  console.log({ date, locationId });
-
-  // TODO: move types
-  type LocationFormType = {
-    date: Dayjs;
-    time: Dayjs;
-  };
-
-  // WEATHER --------------------------------------------
-  const weatherForecastQuery = useQuery({
-    queryKey: ["weather-forecast", date, location],
-    queryFn: () => gowhereApi.getWeatherForecast(date, location),
-    enabled: !!location && !!date,
-    select: (response) => response?.data,
-  });
-
-  // TRAFFIC --------------------------------------------
-
-  // Handle multiple failed calls
-  // useTags hooks for reusability
-  const trafficImagesQuery = useQuery({
+  const {
+    data: trafficData,
+    isLoading: isTrafficQueryLoading,
+    error: trafficError,
+  } = useQuery({
     queryKey: ["traffic-images", date],
     queryFn: () => gowhereApi.getTrafficImages(date),
     enabled: !!date,
     select: ({ data }) => data,
   });
 
-  console.log(trafficImagesQuery);
+  const {
+    data: weatherData,
+    isLoading: isWeatherQueryLoading,
+    error: weatherError,
+  } = useQuery({
+    queryKey: ["weather-forecast", date, location],
+    queryFn: () => gowhereApi.getWeatherForecast(date, location),
+    enabled: !!location && !!date,
+    select: (response) => response?.data,
+  });
 
   const onFinish = (value: LocationFormType) => {
+    const { time } = value;
     const combinedDateTime = value.date
-      .set("hour", value.time.hour())
-      .set("minute", value.time.minute())
-      .set("second", value.time.second());
+      .set("hour", time.hour())
+      .set("minute", time.minute())
+      .set("second", time.second());
 
+    setLocation(null);
     setLocationId(null);
     setDate(combinedDateTime.toISOString());
-
-    // TODO: clear weather and location on search
   };
 
   useEffect(() => {
-    if (!trafficImagesQuery.data) return;
+    if (!trafficData) return;
 
-    const record = trafficImagesQuery.data.find((d) => d.id === locationId);
+    const record = trafficData.find((traffic) => traffic.id === locationId);
 
     if (!record) {
-      // @TODO Handle locationId not found
+      setLocation(null);
       return;
     }
 
     setLocation(record);
-  }, [trafficImagesQuery.data, locationId]);
+  }, [trafficData, locationId]);
 
-  // LOCATION -----------------------------------------
-
-  const getLocationOptions = () => {
-    if (!trafficImagesQuery.data) return [];
-
-    return trafficImagesQuery.data.map((item) => ({
-      value: item.id,
-      label: item.name,
-    }));
+  const onLocationChange = (value: string) => {
+    setLocationId(value);
   };
-
-  // RENDER
 
   return (
     <div className="location-traffic-weather">
       <Form form={form} layout="vertical" onFinish={onFinish}>
-        <Form.Item name="date" label="Date" required>
+        <Form.Item name="date" label="Date" rules={[validation.required]}>
           <DatePicker placeholder="Select date" />
         </Form.Item>
-        <Form.Item name="time" label="Time" required>
+        <Form.Item name="time" label="Time" rules={[validation.required]}>
           <TimePicker placeholder="Select Time" format="HH:mm" />
         </Form.Item>
 
         <Form.Item>
-          {/* Add disabled and loading */}
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={isTrafficQueryLoading}
+          >
             Search
           </Button>
         </Form.Item>
@@ -104,24 +98,23 @@ const LocationTrafficAndWeather = (): ReactElement => {
 
       <div className="locations-info">
         <div className="location-main">
-          {trafficImagesQuery.data ? (
-            <>
-              <Select
-                value={locationId}
-                options={getLocationOptions()}
-                onChange={setLocationId} // TODO clear weather
-                placeholder="Please select location"
-                className="location-select"
-              />
-            </>
-          ) : null}
+          <LocationsList
+            locationId={locationId}
+            onLocationChange={onLocationChange}
+            trafficData={trafficData}
+            error={trafficError}
+          />
 
           <div className="forecast">
-            {/* Add loading here */}
-            <WeatherForecast locationForecast={weatherForecastQuery?.data} />
+            <WeatherForecast
+              locationForecast={weatherData}
+              isLoading={isWeatherQueryLoading}
+              error={weatherError}
+            />
           </div>
         </div>
-        <div className="traffic-camera">
+
+        <div className="traffic-image">
           <TrafficCamera location={location} />
         </div>
       </div>

@@ -3,7 +3,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import LocationTrafficAndWeather from "./containers/LocationTrafficAndWeather/LocationTrafficAndWeather";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
   return (

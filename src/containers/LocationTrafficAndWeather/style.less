@@ -22,15 +22,24 @@
 
   .ant-form-item {
     display: flex;
-    align-items: end;
-    margin-bottom: 8px;
+    align-items: start;
+    height: 84px;
+    margin-bottom: 0;
   }
 
   button {
     display: flex;
+    margin-top: 30px;
+  }
 
-    @media only screen and (max-width: 640px) {
+  @media only screen and (max-width: 640px) {
+    .ant-form-item {
+      height: unset;
+    }
+
+    button {
       float: right;
+      margin-top: 12px;
     }
   }
 }
@@ -38,7 +47,7 @@
 .location-main {
   .rowGrid();
 
-  .location-select {
+  > div:first-child {
     grid-column: span 2;
   }
 
@@ -49,10 +58,17 @@
   }
 }
 
-.traffic-camera {
+.traffic-image {
   .rowGrid();
 
   > div {
     grid-column: span 2;
   }
+}
+
+.ant-spin {
+  display: flex;
+  height: 100%;
+  align-items: end;
+  padding-bottom: 8px;
 }
