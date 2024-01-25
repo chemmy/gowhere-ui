@@ -14,8 +14,10 @@ import {
   LOCAL_STORAGE_KEYS,
   localStorageHelper,
 } from "../../common/helpers/localStorage";
+import { getRecentSearchesByOthers, updateSearchHistory } from "./helper";
 
 import "./style.less";
+import { getCombinedDatetime } from "../../common/helpers/date";
 
 type LocationFormType = {
   date: Dayjs;
@@ -30,9 +32,10 @@ const LocationTrafficAndWeather = (): ReactElement => {
   const [location, setLocation] = useState<TrafficImageType | null>(null);
   const [locationId, setLocationId] = useState<string | null>(null);
 
-  const { RECENT_SEARCHES } = LOCAL_STORAGE_KEYS;
   const recentSearches =
-    localStorageHelper.getItem<Array<TrafficImageType>>(RECENT_SEARCHES) || [];
+    localStorageHelper.getItem<Array<TrafficImageType>>(
+      LOCAL_STORAGE_KEYS.RECENT_SEARCHES
+    ) || [];
 
   const {
     data: trafficData,
@@ -57,7 +60,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
   });
 
   const { data: recentQueryData } = useQuery({
-    queryKey: ["most-recent"],
+    queryKey: ["recent-location-searches"],
     queryFn: () => gowhereApi.getMostRecentSearches(),
     enabled: !!date,
     select: (response) => response,
@@ -77,32 +80,18 @@ const LocationTrafficAndWeather = (): ReactElement => {
     }
 
     setLocation(selectedLocation);
-    updateSearchHistory(selectedLocation);
+    updateSearchHistory(selectedLocation, recentSearches);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trafficData, locationId]);
 
   const onFinish = (value: LocationFormType) => {
-    const { time } = value;
-    const combinedDateTime = value.date
-      .set("hour", time.hour())
-      .set("minute", time.minute())
-      .set("second", time.second());
+    const { date, time } = value;
+    const datetime = getCombinedDatetime(date, time);
 
     setLocation(null);
     setLocationId(null);
-    setDate(combinedDateTime.toISOString());
-  };
-
-  const LIST_MAX = 5;
-  const updateSearchHistory = (location: TrafficImageType) => {
-    const searches = recentSearches.filter((item) => item.id != location.id);
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { image, ...rest } = location;
-    const updatedHistory = [rest, ...searches].slice(0, LIST_MAX);
-
-    localStorageHelper.setItem(RECENT_SEARCHES, updatedHistory);
+    setDate(datetime.toISOString());
   };
 
   const onRecentSearchClick = (item: RecentSearchesType) => {
@@ -112,17 +101,6 @@ const LocationTrafficAndWeather = (): ReactElement => {
   const onRecentSearchByOthersClick = (item: RecentSearchesType) => {
     const record = trafficData?.find((traffic) => traffic.name === item.name);
     setLocationId(record?.id || null);
-  };
-
-  const getRecentSearchesByOthers = (): Array<RecentSearchesType> => {
-    if (!recentSearches?.length || !recentQueryData?.length) return [];
-    return recentQueryData
-      .filter((othersSearch) => {
-        return !recentSearches
-          .slice(0, LIST_MAX)
-          .find((mySearches) => othersSearch.name === mySearches.name);
-      })
-      .slice(0, LIST_MAX);
   };
 
   return (
@@ -136,7 +114,6 @@ const LocationTrafficAndWeather = (): ReactElement => {
         </Form.Item>
 
         <Form.Item>
-          {contextHolder}
           <Button
             type="primary"
             htmlType="submit"
@@ -154,9 +131,13 @@ const LocationTrafficAndWeather = (): ReactElement => {
             list={recentSearches}
             onItemClick={onRecentSearchClick}
           />
+          {contextHolder}
           <RecentSearches
             title="Recent Searches by Others"
-            list={getRecentSearchesByOthers()}
+            list={getRecentSearchesByOthers(
+              recentSearches,
+              recentQueryData || []
+            )}
             onItemClick={onRecentSearchByOthersClick}
           />
         </div>
