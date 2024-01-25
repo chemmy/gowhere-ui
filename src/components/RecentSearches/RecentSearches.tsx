@@ -3,10 +3,10 @@ import { ReactElement } from "react";
 
 import "./style.less";
 
-type RecentSearchesType = {
+type RecentSearchesPropsType = {
   title: string;
-  list: Array<TrafficImage>;
-  onItemClick: (item: TrafficImage) => void;
+  list: Array<RecentSearchesType>;
+  onItemClick: (item: RecentSearchesType) => void;
 };
 
 const { Text } = Typography;
@@ -15,7 +15,7 @@ const RecentSearches = ({
   title = "Recent Searches",
   list,
   onItemClick,
-}: RecentSearchesType): ReactElement | null => {
+}: RecentSearchesPropsType): ReactElement | null => {
   if (!list?.length) return null;
 
   return (

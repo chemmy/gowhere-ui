@@ -4,13 +4,13 @@ import { imageFallback } from "../../common/constants/image";
 
 import "./style.less";
 
-type TrafficCameraType = {
-  location: TrafficImage | null;
+type TrafficCameraPropsType = {
+  location: TrafficImageType | null;
 };
 
 const TrafficCamera = ({
   location,
-}: TrafficCameraType): ReactElement | null => {
+}: TrafficCameraPropsType): ReactElement | null => {
   if (!location) return null;
 
   const { name, image } = location;

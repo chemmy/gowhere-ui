@@ -8,7 +8,7 @@ import "./style.less";
 import { Spin } from "antd";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-type WeatherForecastProps = {
+type WeatherForecastPropsType = {
   locationForecast?: {
     forecast: string;
   };
@@ -20,7 +20,7 @@ const WeatherForecast = ({
   locationForecast,
   isLoading,
   error,
-}: WeatherForecastProps): ReactElement | null => {
+}: WeatherForecastPropsType): ReactElement | null => {
   if (error) {
     return <ErrorMessage error={error} />;
   }

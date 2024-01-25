@@ -3,10 +3,10 @@ import { Select } from "antd";
 
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-type LocationsListType = {
+type LocationsListPropsType = {
   locationId: string | null;
   onLocationChange: (value: string) => void;
-  trafficData: TrafficImage[] | undefined;
+  trafficData: Array<TrafficImageType> | undefined;
   error: Error | null;
 };
 
@@ -15,7 +15,7 @@ const LocationsList = ({
   onLocationChange,
   trafficData,
   error,
-}: LocationsListType): ReactElement | null => {
+}: LocationsListPropsType): ReactElement | null => {
   if (error) {
     return <ErrorMessage error={error} />;
   }

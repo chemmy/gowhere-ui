@@ -1,12 +1,10 @@
 import { Alert } from "antd";
 
-import { ApiErrorResponseType } from "../../common/types/api";
-
-type ErrorMessageType = {
+type ErrorMessagePropsType = {
   error: Error | null;
 };
 
-const ErrorMessage = ({ error }: ErrorMessageType) => {
+const ErrorMessage = ({ error }: ErrorMessagePropsType) => {
   const { message, error: errorTitle } =
     (error as unknown as ApiErrorResponseType)?.response?.data || {};
 
