@@ -1,30 +1,59 @@
-# React + TypeScript + Vite
+# GoWhere UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple application that will provide user with traffic image and weather forecast given date, time and location
 
-Currently, two official plugins are available:
+## Local setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clone repository or download zip
+2. Also clone or download this project's server repository from https://github.com/chemmy/gowhere-server and follow readme instructions
+3. Add .env to root folder, copy from envsample file and update if necessary
+4. Run `npm i` to install dependencies
+5. Run `npm run start` to start application
 
-## Expanding the ESLint configuration
+## Application
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. The app will prompt user for date and time
+2. Upon submission, user will be shown:
+   - list of locations
+   - recently searched locations by user
+   - recently searched locations by other users
+3. The use can then select a location
+4. Then app will show the traffic image and weather forecast
 
-- Configure the top-level `parserOptions` property like this:
+## Assumptions
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+1. Only 1 page will be available for users, reports can be accessed by directly calling endpoints
+2. Display 5 recent searches
+
+## Architecture Overview
+
+### Structure
+
+```
+/src
+  /assets       # images, shared styles, static assets
+  /common       # shared functionalities, constants
+  /components   # reusable ui components
+  /containers   # higher-level or page-level components
+  /services     # api services
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### State management
+
+React-Query is used for this application's state management. It is also great for managing server state - fetching, caching, and synchronizing.
+
+### UI Component & Styling
+
+Antd provides comprehensive and consistent UI components that allows us to build and deploy UI components without spending excessive time on styling.
+
+In addition, LESS css preprocessor is used for styling as it is the primary styling language of antd
+
+## Critical Decisions
+
+Using technologies that are new to me (e.g. React-Query, Vite, Antd) as they are recommended by the community. I have yet to explore their best use cases but so far I did not regret it as it made my development easier, while learning new things.
+
+## Improvements
+
+1. User identity to track and link a search to a user
+2. Sentry for error-tracking
+3. Mono-repo

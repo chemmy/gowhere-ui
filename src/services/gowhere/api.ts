@@ -9,7 +9,7 @@ const gowhereApiInstance = axios.create({
 });
 
 const getTrafficImages = (
-  datetime: string
+  datetime: string,
 ): Promise<AxiosResponse<Array<TrafficImageType>>> => {
   return gowhereApiInstance.get<Array<TrafficImageType>>("/locations/traffic", {
     params: { datetime },
@@ -18,7 +18,7 @@ const getTrafficImages = (
 
 const getWeatherForecast = async (
   datetime: string,
-  location: TrafficImageType | null
+  location: TrafficImageType | null,
 ): Promise<AxiosResponse<WeatherForecastType> | null> => {
   if (!location) return null;
 
@@ -27,7 +27,7 @@ const getWeatherForecast = async (
 
   return await gowhereApiInstance.get<WeatherForecastType>(
     "/locations/weather",
-    { params }
+    { params },
   );
 };
 

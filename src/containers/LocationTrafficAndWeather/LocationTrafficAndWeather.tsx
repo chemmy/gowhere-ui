@@ -34,7 +34,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
 
   const recentSearches =
     localStorageHelper.getItem<Array<TrafficImageType>>(
-      LOCAL_STORAGE_KEYS.RECENT_SEARCHES
+      LOCAL_STORAGE_KEYS.RECENT_SEARCHES,
     ) || [];
 
   const {
@@ -70,7 +70,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
     if (!trafficData || !locationId) return;
 
     const selectedLocation = trafficData.find(
-      (traffic) => traffic.id === locationId
+      (traffic) => traffic.id === locationId,
     );
 
     if (!selectedLocation) {
@@ -136,7 +136,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
             title="Recent Searches by Others"
             list={getRecentSearchesByOthers(
               recentSearches,
-              recentQueryData || []
+              recentQueryData || [],
             )}
             onItemClick={onRecentSearchByOthersClick}
           />

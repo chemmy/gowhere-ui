@@ -7,7 +7,7 @@ export const HISTORY_LIST_MAX = 5;
 
 export const updateSearchHistory = (
   location: TrafficImageType,
-  recentSearches: Array<TrafficImageType>
+  recentSearches: Array<TrafficImageType>,
 ) => {
   const searches =
     recentSearches?.filter((item) => item.id != location.id) || [];
@@ -18,13 +18,13 @@ export const updateSearchHistory = (
 
   localStorageHelper.setItem(
     LOCAL_STORAGE_KEYS.RECENT_SEARCHES,
-    updatedHistory
+    updatedHistory,
   );
 };
 
 export const getRecentSearchesByOthers = (
   recentSearches: Array<RecentSearchesType>,
-  recentQueryData: Array<RecentSearchesType>
+  recentQueryData: Array<RecentSearchesType>,
 ): Array<RecentSearchesType> => {
   if (!recentSearches?.length || !recentQueryData?.length) return [];
 
@@ -32,7 +32,7 @@ export const getRecentSearchesByOthers = (
 
   const notMySearches = recentQueryData.filter((othersSearch) => {
     return !mostRecentSearches.find(
-      (mySearches) => othersSearch.name === mySearches.name
+      (mySearches) => othersSearch.name === mySearches.name,
     );
   });
 
