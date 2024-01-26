@@ -24,6 +24,7 @@ A simple application that will provide user with traffic image and weather forec
 
 1. Only 1 page will be available for users, reports can be accessed by directly calling endpoints
 2. Display 5 recent searches
+3. Saved search history only has location, not datetime. As it won't make sense to search a time that has already passed.
 
 ## Architecture Overview
 
