@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Card, Image } from "antd";
-import { imageFallback } from "../../common/constants/image";
+import { imageFallback } from "@common/constants/image";
 
 import "./style.less";
 

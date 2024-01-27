@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Flex, Popover, Typography } from "antd";
-import { weatherIcons } from "../../common/constants/weather";
 import { QuestionCircleFilled } from "@ant-design/icons";
+
+import { weatherIcons } from "@common/constants/weather";
 
 const { Text } = Typography;
 

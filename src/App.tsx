@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import LocationTrafficAndWeather from "./containers/LocationTrafficAndWeather/LocationTrafficAndWeather";
+import LocationTrafficAndWeather from "@containers/LocationTrafficAndWeather/LocationTrafficAndWeather";
 
 const queryClient = new QueryClient({
   defaultOptions: {

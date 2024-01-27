@@ -4,20 +4,20 @@ import { useQuery } from "@tanstack/react-query";
 
 import type { Dayjs } from "dayjs";
 
-import TrafficCamera from "../../components/TrafficCamera/TrafficCamera";
-import WeatherForecast from "../../components/WeatherForecast/WeatherForecast";
-import LocationsList from "../../components/LocationsList/LocationsList";
-import RecentSearches from "../../components/RecentSearches/RecentSearches";
-import { gowhereApi } from "../../services/gowhere/api";
-import { validation } from "../../common/constants/forms";
+import TrafficCamera from "@components/TrafficCamera/TrafficCamera";
+import WeatherForecast from "@components/WeatherForecast/WeatherForecast";
+import LocationsList from "@components/LocationsList/LocationsList";
+import RecentSearches from "@components/RecentSearches/RecentSearches";
+import { gowhereApi } from "@services/gowhere/api";
+import { validation } from "@common/constants/forms";
 import {
   LOCAL_STORAGE_KEYS,
   localStorageHelper,
-} from "../../common/helpers/localStorage";
+} from "@common/helpers/localStorage";
+import { getCombinedDatetime } from "@common/helpers/date";
 import { getRecentSearchesByOthers, updateSearchHistory } from "./helper";
 
 import "./style.less";
-import { getCombinedDatetime } from "../../common/helpers/date";
 
 type LocationFormType = {
   date: Dayjs;
@@ -34,7 +34,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
 
   const recentSearches =
     localStorageHelper.getItem<Array<TrafficImageType>>(
-      LOCAL_STORAGE_KEYS.RECENT_SEARCHES,
+      LOCAL_STORAGE_KEYS.RECENT_SEARCHES
     ) || [];
 
   const {
@@ -70,7 +70,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
     if (!trafficData || !locationId) return;
 
     const selectedLocation = trafficData.find(
-      (traffic) => traffic.id === locationId,
+      (traffic) => traffic.id === locationId
     );
 
     if (!selectedLocation) {
@@ -124,7 +124,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
         </Form.Item>
       </Form>
 
-      {date ? (
+      {date && trafficData?.length ? (
         <div className="recent-record">
           <RecentSearches
             title="My Recent Searches"
@@ -136,7 +136,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
             title="Recent Searches by Others"
             list={getRecentSearchesByOthers(
               recentSearches,
-              recentQueryData || [],
+              recentQueryData || []
             )}
             onItemClick={onRecentSearchByOthersClick}
           />

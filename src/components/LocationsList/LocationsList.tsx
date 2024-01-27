@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Select } from "antd";
 
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 
 type LocationsListPropsType = {
   locationId: string | null;
@@ -34,7 +34,11 @@ const LocationsList = ({
         value={locationId}
         options={getLocationOptions()}
         onChange={onLocationChange}
-        placeholder="Please select location"
+        placeholder={
+          trafficData.length
+            ? "Please select location"
+            : "No available location"
+        }
         className="location-select"
       />
     </div>

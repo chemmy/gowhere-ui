@@ -1,12 +1,11 @@
-import { weatherIcons } from "../../common/constants/weather";
 import { WiCloud } from "weather-icons-react";
 import { ReactElement } from "react";
-
-import WeatherIconLegendPopover from "../WeatherIconLegendPopover/WeatherIconLegendPopover";
-
-import "./style.less";
 import { Spin } from "antd";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
+
+import { weatherIcons } from "@common/constants/weather";
+import WeatherIconLegendPopover from "@components/WeatherIconLegendPopover/WeatherIconLegendPopover";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
+import "./style.less";
 
 type WeatherForecastPropsType = {
   locationForecast?: {
