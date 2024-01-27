@@ -14,6 +14,7 @@
       "@containers/*": ["src/containers/*"],
       "@services/*": ["src/services/*"],
     },
+    "types": ["vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -29,6 +30,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
   },
-  "include": ["src"],
+  "include": ["src", "./src/tests/setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
 }

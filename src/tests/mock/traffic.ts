@@ -1,0 +1,51 @@
+export const mockTrafficImageLocations = [
+  {
+    id: "001",
+    image: "img-01",
+    latitude: 1.01,
+    longitude: 11.1,
+    name: "Location 1",
+  },
+  {
+    id: "002",
+    image: "img-02",
+    latitude: 2.02,
+    longitude: 22.2,
+    name: "Location 2",
+  },
+  {
+    id: "003",
+    image: "img-03",
+    latitude: 3.03,
+    longitude: 33.3,
+    name: "Location 3",
+  },
+  {
+    id: "004",
+    image: "img-04",
+    latitude: 4.04,
+    longitude: 44.4,
+    name: "Location 4",
+  },
+  {
+    id: "005",
+    image: "img-05",
+    latitude: 5.05,
+    longitude: 55.5,
+    name: "Location 5",
+  },
+  {
+    id: "006",
+    image: "img-06",
+    latitude: 6.06,
+    longitude: 66.6,
+    name: "Location 6",
+  },
+  {
+    id: "007",
+    image: "img-07",
+    latitude: 7.07,
+    longitude: 77.7,
+    name: "Location 7",
+  },
+];

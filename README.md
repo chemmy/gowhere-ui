@@ -8,7 +8,7 @@ A simple application that will provide user with traffic image and weather forec
 2. Also clone or download this project's server repository from https://github.com/chemmy/gowhere-server and follow readme instructions
 3. Add .env to root folder, copy from envsample file and update if necessary
 4. Run `npm i` to install dependencies
-5. Run `npm run start` to start application
+5. Run `npm run dev` to start application
 
 ## Application
 

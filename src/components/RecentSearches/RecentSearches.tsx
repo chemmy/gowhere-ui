@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 import "./style.less";
 
 type RecentSearchesPropsType = {
-  title: string;
+  title?: string;
   list: Array<RecentSearchesType>;
   onItemClick: (item: RecentSearchesType) => void;
 };

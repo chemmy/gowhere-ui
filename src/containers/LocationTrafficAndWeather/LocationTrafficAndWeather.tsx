@@ -110,7 +110,7 @@ const LocationTrafficAndWeather = (): ReactElement => {
           <DatePicker placeholder="Select date" />
         </Form.Item>
         <Form.Item name="time" label="Time" rules={[validation.required]}>
-          <TimePicker placeholder="Select Time" format="HH:mm" />
+          <TimePicker placeholder="Select time" format="HH:mm" />
         </Form.Item>
 
         <Form.Item>

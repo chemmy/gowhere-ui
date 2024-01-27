@@ -12,7 +12,7 @@ type WeatherForecastPropsType = {
     forecast: string;
   };
   isLoading: boolean;
-  error: Error | null;
+  error: Error | null | string;
 };
 
 const WeatherForecast = ({

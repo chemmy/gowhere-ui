@@ -23,8 +23,8 @@ export const updateSearchHistory = (
 };
 
 export const getRecentSearchesByOthers = (
-  recentSearches: Array<RecentSearchesType>,
-  recentQueryData: Array<RecentSearchesType>
+  recentSearches?: Array<RecentSearchesType>,
+  recentQueryData?: Array<RecentSearchesType>
 ): Array<RecentSearchesType> => {
   if (!recentSearches?.length || !recentQueryData?.length) return [];
 
