@@ -26,9 +26,9 @@ export const getRecentSearchesByOthers = (
   recentSearches?: Array<RecentSearchesType>,
   recentQueryData?: Array<RecentSearchesType>
 ): Array<RecentSearchesType> => {
-  if (!recentSearches?.length || !recentQueryData?.length) return [];
+  if (!recentQueryData?.length) return [];
 
-  const mostRecentSearches = recentSearches.slice(0, HISTORY_LIST_MAX);
+  const mostRecentSearches = recentSearches?.slice(0, HISTORY_LIST_MAX) || [];
 
   const notMySearches = recentQueryData.filter((othersSearch) => {
     return !mostRecentSearches.find(

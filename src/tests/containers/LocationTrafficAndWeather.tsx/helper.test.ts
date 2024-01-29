@@ -63,7 +63,7 @@ describe("LocationTrafficAndWeather helper", () => {
 
     it("should return empty array if recentSearches is empty", () => {
       const actual = getRecentSearchesByOthers(undefined, recentQueryData);
-      expect(actual).toEqual([]);
+      expect(actual).toEqual(recentQueryData);
     });
 
     it("should return empty array if recentSearches is empty", () => {
